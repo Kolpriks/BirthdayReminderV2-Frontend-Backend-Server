@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    color: white;
+    background-color: rgb(50, 48, 48);
+}
+
+.nav {
+    max-width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    height: 48px;
+    margin: 0 auto;
+}
+
+.nav-ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    align-items: center;
+}
+
+.nav-ul a,
+h1 {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
