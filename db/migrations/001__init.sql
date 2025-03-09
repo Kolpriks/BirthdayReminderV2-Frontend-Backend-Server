@@ -1,3 +1,8 @@
+create table if not exists schema_migrations (
+    migration varchar(255) primary key,
+    applied_at timestamp default CURRENT_TIMESTAMP
+);
+
 create table if not exists users (
 	id serial primary key,
 	first_name varchar(30) not null,

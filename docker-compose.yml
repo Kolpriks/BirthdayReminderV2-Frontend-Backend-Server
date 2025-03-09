@@ -1,13 +1,24 @@
+version: '3.8'
 services:
   db:
-    image: postgres:latest
+    build: ./db
     container_name: birthday_reminder_db
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    volumes:
-      - ./db/docker-entrypoint/:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
+    volumes:
+      - ./db/migrations:/migrations
+      - ./db/seed-data/:/seed-data
+      - pgdata:/var/lib/postgresql/data
+      # Если хотите во время разработки иметь возможность обновлять скрипты миграций и seed-данные,
+      # можно примонтировать и локальные папки (но будьте осторожны – они могут перезаписать файлы из образа):
+      #- ./db/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
+      #- ./db/migrations/:/migrations
+      #- ./db/seed-data/:/seed-data
+
+volumes:
+  pgdata:
