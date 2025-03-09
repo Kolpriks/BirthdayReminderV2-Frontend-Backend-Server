@@ -1,24 +1,27 @@
-import express, { Request, Response } from 'express';
+import express from 'express'
 import cors from "cors"
-import cookieParser from "cookie-parser"
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 import { sql } from './db'
-import { login } from './api';
-import { auth } from './middlewares/auth';
+import { login } from './api/auth/login'
+import { register } from './api/auth/register'
+import { user } from './api/auth'
+import { addBirthday, getBirthdays } from './api/birthdays'
 
-dotenv.config()
+dotenv.config({ path: '../.env' })
 
-const app = express();
-const PORT = process.env.PORT || 8080;
 
-app.use(express.json());
+const app = express()
+const PORT = process.env.BACKEND_PORT || 8080
+
 app.use(cors())
-// app.use(cookieParser())
+app.use(express.json())
 
-app.use(auth)
-
+register(app, sql)
 login(app, sql)
+user(app, sql)
+addBirthday(app, sql)
+getBirthdays(app, sql)
 
 app.listen(PORT, () => {
-    console.log(`Server is running on PORT:${PORT}`);
-});
+    console.log(`Server is running on PORT:${PORT}`)
+})

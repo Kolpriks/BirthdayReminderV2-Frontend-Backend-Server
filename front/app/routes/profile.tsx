@@ -1,87 +1,68 @@
-import { useState } from "react"
-import styles from "../profile.module.css"
+import { LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node"
+import { tokenCookie } from "../cookies.server"
+import { Form, useLoaderData } from "@remix-run/react"
 
-const Login = ({ toggleForm }: { toggleForm: () => void }) => {
-    return (
-        <div className={styles.container}>
-            <div className={styles.content}>
-                <h2 className={styles.headerText}>Login to your account</h2>
-                <div className={styles.form}>
-                    <div className={styles.fieldsGroup}>
-                        <p>Your login:</p>
-                        <input />
-                    </div>
-                    <div className={styles.fieldsGroup}>
-                        <p>Your password:</p>
-                        <input />
-                    </div>
-                    {/* TODO: добавить каптчу */}
-                    <div className={styles.fieldsGroup}>
-                        <button className={styles.submitButton}>Submit</button>
-                    </div>
-                    <div className={styles.fieldsGroup}>
-                        <p className={styles.switchBetweenLoginAndReg} onClick={toggleForm}>Don't have an account?</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
+interface Profile {
+	email: string;
+	firstName: string;
+	secondName: string;
 }
 
-const Registration = ({ toggleForm }: { toggleForm: () => void }) => {
-    return (
-        <div className={styles.container}>
-            <div className={styles.content}>
-                <h2 className={styles.headerText}>Registrate your account</h2>
-                <div className={styles.form}>
-                    <div className={styles.fieldsGroup}>
-                        <p>Your login:</p>
-                        <input />
-                    </div>
-                    <div className={styles.fieldsGroup}>
-                        <p>Your password:</p>
-                        <input />
-                    </div>
-                    <div className={styles.fieldsGroup}>
-                        <p>Repeat your password:</p>
-                        <input />
-                    </div>
-                    {/* TODO: добавить каптчу */}
-                    <div className={styles.fieldsGroup}>
-                        <button className={styles.submitButton}>Submit</button>
-                    </div>
-                    <div className={styles.fieldsGroup}>
-                        <p className={styles.switchBetweenLoginAndReg} onClick={toggleForm}>Already have an account?</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
+export const meta: MetaFunction = () => {
+	return [
+		{ title: "Birthday Reminder - Login/Registration Page"},
+		{ name: "Page, where you can login into your account or registrate new one", content: "BirthdayReminder site"},
+	]
+}
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+	const cookieHeader = request.headers.get("Cookie")
+	const token = await tokenCookie.parse(cookieHeader)
+  
+	if (!token) {
+		return redirect("/login")
+	}
+  
+	const response = await fetch("http://localhost:3000/v1/auth/user", {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+  
+	if (!response.ok) {
+		return redirect("/login", {
+			headers: {
+			"Set-Cookie": await tokenCookie.serialize(null, { maxAge: 0 }),
+			},
+		})
+	}
+  
+	const userData = await response.json();
+	return userData as Profile;
+}
+
+export const action = async () => {
+	return redirect("/login", {
+		headers: {
+			"Set-Cookie": await tokenCookie.serialize(null, {
+				expires: new Date(0),
+				maxAge: 0 
+			})
+		}
+	})
 }
 
 export default function Profile() {
-    // TODO: Реализовать получение токена от бд по кредам
-    const token = false
-    const [isRegistration, setIsRegistration] = useState(false)
-
-    const toggleForm = () => {
-        setIsRegistration((prev) => !prev)
-    }
-
-    if (token) {
-        return (
-            <div className={styles.container}>
-                <div className={styles.content}>
-                    <p>Страница аккаунта пользователя</p>
-                </div>
-            </div>
-        );
-    } else {
-        return isRegistration ? (
-            <Registration toggleForm={toggleForm} />
-        ) : (
-            <Login toggleForm={toggleForm} />
-        )
-    }
+	const user = useLoaderData<typeof loader>();
+	return (
+		<div>
+			<h1>Welcome home, {user.firstName} {user.secondName}</h1>
+			<h1>Here is your email: {user.email}</h1>
+			<div>
+				<Form method="post" action="/profile">
+					<button type="submit">Logout</button>
+				</Form>
+			</div>
+		</div>
+	)
 }
-
