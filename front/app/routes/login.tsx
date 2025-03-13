@@ -23,9 +23,9 @@ export const action = async ({request}: {request: Request}) => {
 	}
 
 	try {
-		const response = await fetch("http://localhost:3000/v1/auth/login", {
+		const response = await fetch("http://back:3000/v1/auth/login", {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			headers: { "Content-Type": "application/json" }, 
 			body: JSON.stringify({ email, password }),
 		})
 	
@@ -42,7 +42,7 @@ export const action = async ({request}: {request: Request}) => {
 		return redirect("/profile", {headers})
 	} catch (error) {
 		return Response.json(
-			{ error: "Connection error" },
+			{ error: `Connection error: ${error}` },
 			{ status: 500 }
 		)
 	}

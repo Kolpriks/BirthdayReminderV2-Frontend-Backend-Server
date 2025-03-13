@@ -40,7 +40,7 @@ export const action = async ({request}: {request: Request}) => {
 	}
 
 	try {
-		const response = await fetch("http://localhost:3000/v1/birthdays/add-birthday", {
+		const response = await fetch("http://back:3000/v1/birthdays/add-birthday", {
 			method: "POST",
 			headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, },
 			body: JSON.stringify({ firstName, secondName, date }),
@@ -68,7 +68,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	if (!token) return redirect("/login")
 
 	try {
-		const response = await fetch("http://localhost:3000/v1/birthdays/get-birthdays", {
+		const response = await fetch("http://back:3000/v1/birthdays/get-birthdays", {
 			method: "GET",
 			headers: { Authorization: `Bearer ${token}`, }
 		})
