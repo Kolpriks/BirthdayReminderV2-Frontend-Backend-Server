@@ -1,1 +1,36 @@
 name: CI/CD to Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            cd /BirthdayReminderV2
+            
+            # Обновляем репозиторий (предварительно настройте Git для работы без запроса логина/пароля)
+            git pull origin master
+
+            # Пересобираем и перезапускаем только front и back контейнеры,
+            # чтобы контейнер db не пересобирался и не потерялись данные
+            docker-compose up -d --no-deps --build front back
+
+            # Запускаем скрипт миграций для базы данных
+            # Предполагается, что файл db/apply_migrations.sh актуален после git pull
+            cd db
+            chmod +x apply_migrations.sh
+            ./apply_migrations.sh
