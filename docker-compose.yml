@@ -34,6 +34,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      - ./db/apply_migrations.sh:/apply_migrations.sh
       - ./db/migrations:/migrations
       - ./db/seed-data:/seed-data
       - pgdata:/var/lib/postgresql/data
