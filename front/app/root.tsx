@@ -44,33 +44,33 @@ const routes = [
 
 export function Layout({ children }: { children: React.ReactNode }) {
 
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <header>
-          <nav className="nav" style={{backgroundColor: "grey"}}>
-            <h1>Birthday-Reminder</h1>
-            <ul className="nav-ul">
-              {routes.map(({ id, name, route }) => (
-                <li key={id}>
-                  <Link to={route}>{name}</Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </header>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+		<head>
+			<meta charSet="utf-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<Meta />
+			<Links />
+		</head>
+		<body>
+			<header>
+			<nav className="nav" style={{backgroundColor: "grey"}}>
+				<h1>Birthday-Reminder</h1>
+				<ul className="nav-ul">
+				{routes.map(({ id, name, route }) => (
+					<li key={id}>
+					<Link to={route}>{name}</Link>
+					</li>
+				))}
+				</ul>
+			</nav>
+			</header>
+				{children}
+			<ScrollRestoration />
+			<Scripts />
+		</body>
+		</html>
+	);
 }
 
 export default function App() {
