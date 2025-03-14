@@ -22,15 +22,7 @@ jobs:
           script: |
             cd BirthdayReminderV2/
             
-            # Обновляем репозиторий (предварительно настройте Git для работы без запроса логина/пароля)
             git pull origin master
 
-            # Пересобираем и перезапускаем только front и back контейнеры,
-            # чтобы контейнер db не пересобирался и не потерялись данные
-            docker-compose up -d --no-deps --build front back
-
-            # Запускаем скрипт миграций для базы данных
-            # Предполагается, что файл db/apply_migrations.sh актуален после git pull
-            cd db
-            chmod +x apply_migrations.sh
-            ./apply_migrations.sh
+            sudo docker-compose up -d --no-deps --build front back
+            sudo docker-compose exec db bash /db/apply_migrations.sh
