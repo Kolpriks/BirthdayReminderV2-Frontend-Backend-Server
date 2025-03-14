@@ -5,7 +5,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useActionData,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import "./styles.css"
@@ -44,7 +43,7 @@ const routes = [
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const actionData = useActionData();
+
   return (
     <html lang="en">
       <head>
@@ -55,7 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <header>
-          <nav className="nav">
+          <nav className="nav" style={{backgroundColor: "grey"}}>
             <h1>Birthday-Reminder</h1>
             <ul className="nav-ul">
               {routes.map(({ id, name, route }) => (
