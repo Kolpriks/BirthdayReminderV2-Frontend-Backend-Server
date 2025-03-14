@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
-            cd /BirthdayReminderV2/
+            cd BirthdayReminderV2/
             
             # Обновляем репозиторий (предварительно настройте Git для работы без запроса логина/пароля)
             git pull origin master
