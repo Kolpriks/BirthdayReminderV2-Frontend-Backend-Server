@@ -1,9 +1,0 @@
-{
-	"name": "db",
-	"version": "1.0.0",
-	"scripts": {
-		"reset-db": "docker-compose down db -v && docker-compose up -d db --build"
-	},
-	"license": "ISC",
-	"description": ""
-}
