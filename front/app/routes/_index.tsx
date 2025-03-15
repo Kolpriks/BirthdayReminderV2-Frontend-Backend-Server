@@ -12,6 +12,7 @@ export default function Index() {
   return (
     <div>
       main page
+		Privet Medved!
     </div>
   );
 }
