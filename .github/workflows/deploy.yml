@@ -24,5 +24,6 @@ jobs:
             
             git pull origin master
 
-            sudo docker-compose up -d --no-deps --no-cache front back
+            sudo docker-compose build --no-cache front back
+            sudo docker-compose up -d --no-deps front back
             sudo docker-compose exec -T db bash /apply_migrations.sh
