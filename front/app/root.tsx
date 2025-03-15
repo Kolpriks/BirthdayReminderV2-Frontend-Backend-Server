@@ -54,7 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 		</head>
 		<body>
 			<header>
-			<nav className="nav" style={{backgroundColor: "grey"}}>
+			<nav className="nav">
 				<h1>Birthday-Reminder</h1>
 				<ul className="nav-ul">
 				{routes.map(({ id, name, route }) => (
