@@ -1,0 +1,80 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Деплой на сервер 1
+      - name: Deploy to Server 1
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER1_IP }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            cd BirthdayReminderV2/
+            git pull origin master
+
+            # Остановка и удаление контейнеров front и back
+            sudo docker-compose stop front back
+            sudo docker-compose rm -f front back
+
+            # Удаление старых образов (если они есть)
+            sudo docker rmi $(sudo docker images "birthdayreminderv2-front" -q) || true
+            sudo docker rmi $(sudo docker images "birthdayreminderv2-back" -q) || true
+
+            # Сборка и запуск новых контейнеров
+            sudo docker-compose build --no-cache front back
+            sudo docker-compose up -d front back
+
+            # Применение миграций (если требуется)
+            sudo docker-compose exec -T db bash /apply_migrations.sh
+
+      # Проверка работоспособности сервера 1
+      - name: Health Check Server 1
+        run: |
+          echo "Ожидание 15 секунд для стабилизации сервера 1..."
+          sleep 15
+          echo "Проверка доступности фронтенда на сервере 1..."
+          # Здесь можно настроить проверку доступности нужного сервиса.
+          # В примере проверяется, что сервер отвечает на HTTP запрос (порт 5173)
+          curl -f http://${{ secrets.SERVER1_IP }}:5173 || { echo "Сервер 1 недоступен"; exit 1; }
+
+      # Деплой на сервер 2
+      - name: Deploy to Server 2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER2_IP }}
+          username: ${{ secrets.SERVER2_USER }}
+          key: ${{ secrets.SERVER2_SSH_KEY }}
+          script: |
+            cd BirthdayReminderV2/
+            git pull origin master
+
+            sudo docker-compose stop front back
+            sudo docker-compose rm -f front back
+
+            sudo docker rmi $(sudo docker images "birthdayreminderv2-front" -q) || true
+            sudo docker rmi $(sudo docker images "birthdayreminderv2-back" -q) || true
+
+            sudo docker-compose build --no-cache front back
+            sudo docker-compose up -d front back
+
+            sudo docker-compose exec -T db bash /apply_migrations.sh
+
+      # Проверка работоспособности сервера 2
+      - name: Health Check Server 2
+        run: |
+          echo "Ожидание 15 секунд для стабилизации сервера 2..."
+          sleep 15
+          echo "Проверка доступности фронтенда на сервере 2..."
+          curl -f http://${{ secrets.SERVER2_IP }}:5173 || { echo "Сервер 2 недоступен"; exit 1; }
