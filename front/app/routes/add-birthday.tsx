@@ -2,6 +2,7 @@ import { Form , useActionData, useLoaderData } from "@remix-run/react"
 import "../styles.css"
 import { LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node"
 import { tokenCookie } from "../cookies.server"
+import { BASE_URL } from "../root"
 
 interface Birthday {
 	user_id: number;
@@ -40,7 +41,7 @@ export const action = async ({request}: {request: Request}) => {
 	}
 
 	try {
-		const response = await fetch("http://back:3000/v1/birthdays/add-birthday", {
+		const response = await fetch(`${BASE_URL}/v1/birthdays/add-birthday`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, },
 			body: JSON.stringify({ firstName, secondName, date }),

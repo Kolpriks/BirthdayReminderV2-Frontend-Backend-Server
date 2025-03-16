@@ -8,7 +8,7 @@ import {
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import "./styles.css"
-
+export const BASE_URL = import.meta.env.FRONTEND_BASE_URL;
 
 
 export const links: LinksFunction = () => [

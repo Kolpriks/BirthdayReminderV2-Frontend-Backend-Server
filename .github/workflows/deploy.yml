@@ -31,6 +31,7 @@ jobs:
             POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
             BACKEND_PORT=${{ secrets.BACKEND_PORT }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
+            FRONTEND_BASE_URL=${{ secrets.FRONTEND_BASE_URL }}
             EOF
 
 
@@ -68,6 +69,7 @@ jobs:
             POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
             BACKEND_PORT=${{ secrets.BACKEND_PORT }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
+            FRONTEND_BASE_URL=${{ secrets.FRONTEND_BASE_URL }}
             EOF
 
             sudo docker-compose stop front back

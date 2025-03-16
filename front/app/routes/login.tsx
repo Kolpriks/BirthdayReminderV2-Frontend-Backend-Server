@@ -1,6 +1,7 @@
 import { MetaFunction } from "@remix-run/node"
 import { Form, redirect } from "@remix-run/react"
 import { tokenCookie } from "../cookies.server"
+import { BASE_URL } from "../root"
 
 
 export const meta: MetaFunction = () => {
@@ -23,7 +24,7 @@ export const action = async ({request}: {request: Request}) => {
 	}
 
 	try {
-		const response = await fetch("http://back:3000/v1/auth/login", {
+		const response = await fetch(`${BASE_URL}/v1/auth/login`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" }, 
 			body: JSON.stringify({ email, password }),

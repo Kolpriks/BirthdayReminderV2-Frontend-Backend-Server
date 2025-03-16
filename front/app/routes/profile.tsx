@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node"
 import { tokenCookie } from "../cookies.server"
 import { Form, useLoaderData } from "@remix-run/react"
+import { BASE_URL } from "../root"
 
 interface Profile {
 	email: string;
@@ -23,7 +24,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		return redirect("/login")
 	}
   
-	const response = await fetch("http://back:3000/v1/auth/user", {
+	const response = await fetch(`${BASE_URL}/v1/auth/user`, {
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},

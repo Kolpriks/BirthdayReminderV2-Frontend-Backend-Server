@@ -1,5 +1,6 @@
 import { MetaFunction } from "@remix-run/node"
 import { Form, redirect } from "@remix-run/react"
+import { BASE_URL } from "../root"
 
 export const meta: MetaFunction = () => {
 	return [
@@ -37,7 +38,7 @@ export const action = async ({request}: {request: Request}) => {
 		password: password,
 	}
 
-	const response = await fetch("http://back:3000/v1/auth/register", {
+	const response = await fetch(`${BASE_URL}/v1/auth/register`, {
 		method: "POST",
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify(data),
