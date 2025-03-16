@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
-            cd BirthdayReminderV2/
+            cd BirthdayReminderV2-Frontend-Backend-Server/
             git pull origin master
 
             # Остановка и удаление контейнеров front и back
@@ -57,7 +57,7 @@ jobs:
           username: ${{ secrets.SERVER2_USER }}
           key: ${{ secrets.SERVER2_SSH_KEY }}
           script: |
-            cd BirthdayReminderV2/
+            cd BirthdayReminderV2-Frontend-Backend-Server/
             git pull origin master
 
             sudo docker-compose stop front back
