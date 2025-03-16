@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node"
 import { tokenCookie } from "../cookies.server"
 import { Form, useLoaderData } from "@remix-run/react"
-import { BASE_URL } from "../root"
+import { BASE_URL } from "../root";
 
 interface Profile {
 	email: string;

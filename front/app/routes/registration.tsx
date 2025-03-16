@@ -1,6 +1,6 @@
 import { MetaFunction } from "@remix-run/node"
 import { Form, redirect } from "@remix-run/react"
-import { BASE_URL } from "../root"
+import { BASE_URL } from "../root";
 
 export const meta: MetaFunction = () => {
 	return [

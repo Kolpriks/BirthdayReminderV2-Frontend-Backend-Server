@@ -1,8 +1,7 @@
 import { MetaFunction } from "@remix-run/node"
 import { Form, redirect } from "@remix-run/react"
 import { tokenCookie } from "../cookies.server"
-import { BASE_URL } from "../root"
-
+import { BASE_URL } from "../root";
 
 export const meta: MetaFunction = () => {
 	return [
@@ -51,6 +50,7 @@ export const action = async ({request}: {request: Request}) => {
 
 
 export default function Login() {
+	console.log(process.env.NODE_ENV)
 	return (
         <div>
             <div>

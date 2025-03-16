@@ -8,8 +8,8 @@ import {
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import "./styles.css"
-export const BASE_URL = import.meta.env.FRONTEND_BASE_URL;
-
+const __app_env_development__ = process.env.NODE_ENV
+export const BASE_URL = __app_env_development__ ? "http://localhost:3000" : "http://back:3000"
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -54,7 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 		</head>
 		<body>
 			<header>
-			<nav className="nav" style={{backgroundColor: 'purple'}}>
+			<nav className="nav" style={{backgroundColor: 'blue'}}>
 				<h1>Birthday-Reminder</h1>
 				<ul className="nav-ul">
 				{routes.map(({ id, name, route }) => (
