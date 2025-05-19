@@ -50,7 +50,7 @@ export const action = async ({request}: {request: Request}) => {
 
 
 export default function Login() {
-	console.log(process.env.NODE_ENV)
+
 	return (
         <div>
             <div>
